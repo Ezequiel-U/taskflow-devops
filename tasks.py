@@ -29,8 +29,20 @@ def complete_task(tasks, task_id):
 
 
 def delete_task(tasks, task_id):
+    try:
+        task_id = int(task_id)
+    except:
+        print("Error: ID inválido")
+        return
+
     for task in tasks:
         if task["id"] == task_id:
             tasks.remove(task)
+
+            for i, t in enumerate(tasks):
+                t["id"] = i + 1
+
             print("Tarea eliminada")
             return
+
+    print("Error: ID no encontrado")
