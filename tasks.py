@@ -1,4 +1,10 @@
 def add_task(tasks, title):
+    # Verificar si ya existe una tarea con el mismo título
+    for task in tasks:
+        if task["title"].lower() == title.lower():
+            print("Error: ya existe una tarea con ese título")
+            return
+
     task = {
         "id": len(tasks) + 1,
         "title": title,
