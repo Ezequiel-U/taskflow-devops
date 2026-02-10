@@ -25,13 +25,23 @@ def list_tasks(tasks):
 
 
 def complete_task(tasks, task_id):
+    try:
+        task_id = int(task_id)
+    except:
+        print("Error: ID inválido")
+        return
+
     for task in tasks:
         if task["id"] == task_id:
+            if task["completed"]:
+                print("La tarea ya estaba completada")
+                return
             task["completed"] = True
-            print("Tarea completada")
+            print("✔ Tarea completada")
             return
 
-    print("Error: ID no encontrado")
+    print("Error: tarea no encontrada")
+
 
 
 def delete_task(tasks, task_id):
