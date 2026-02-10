@@ -3,8 +3,20 @@ import os
 
 FILE_NAME = "tasks.json"
 
+# Campos obligatorios que debe tener cada tarea
+REQUIRED_FIELDS = {"id", "title", "completed"}
+
+
 def load_tasks():
+    """
+    Carga las tareas desde el archivo JSON.
+    Valida estructura, campos obligatorios y maneja errores.
+    Retorna una lista de tareas válida.
+    """
+
+    # Si el archivo no existe
     if not os.path.exists(FILE_NAME):
+        print("Archivo no encontrado. Se iniciará con una lista vacía.")
         return []
 
     try:
@@ -16,27 +28,45 @@ def load_tasks():
             print("Error: El archivo JSON no contiene una lista de tareas.")
             return []
 
-        # Validar estructura básica de cada tarea
-        for task in data:
+        valid_tasks = []
+
+        for index, task in enumerate(data):
+            # Validar que cada tarea sea un diccionario
             if not isinstance(task, dict):
-                print("Error: Formato de tarea inválido.")
-                return []
+                print(f"Tarea en posición {index} ignorada: estructura inválida.")
+                continue
 
-            if not all(key in task for key in ("id", "title", "completed")):
-                print("Error: Una o más tareas tienen campos faltantes.")
-                return []
+            # Validar campos obligatorios
+            if not REQUIRED_FIELDS.issubset(task.keys()):
+                print(
+                    f"Tarea en posición {index} ignorada: "
+                    f"faltan campos obligatorios {REQUIRED_FIELDS}."
+                )
+                continue
 
-        return data
+            valid_tasks.append(task)
 
-    except json.JSONDecodeError:
-        print("Error: El archivo JSON está corrupto o mal formado.")
+        return valid_tasks
+
+    except json.JSONDecodeError as error:
+        print("Error: El archivo JSON está mal formado o corrupto.")
+        print("Detalle técnico:", error)
         return []
 
-    except Exception as e:
-        print(f"Error inesperado al cargar tareas: {e}")
+    except Exception as error:
+        print("Error inesperado al cargar las tareas.")
+        print("Detalle técnico:", error)
         return []
 
 
 def save_tasks(tasks):
-    with open(FILE_NAME, "w", encoding="utf-8") as file:
-        json.dump(tasks, file, indent=4)
+    """
+    Guarda las tareas en el archivo JSON.
+    """
+
+    try:
+        with open(FILE_NAME, "w", encoding="utf-8") as file:
+            json.dump(tasks, file, indent=4, ensure_ascii=False)
+    except Exception as error:
+        print("Error al guardar las tareas.")
+        print("Detalle técnico:", error)
