@@ -37,6 +37,11 @@ def delete_task(tasks, task_id):
 
     for task in tasks:
         if task["id"] == task_id:
+            confirm = input(f"¿Seguro que deseas eliminar '{task['title']}'? (s/n): ")
+
+            if confirm.lower() != "s":
+                print("Eliminación cancelada")
+                return
             tasks.remove(task)
 
             for i, t in enumerate(tasks):
