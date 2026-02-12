@@ -1,4 +1,18 @@
 def add_task(tasks, title):
+    """
+    Agrega una nueva tarea a la lista de tareas.
+
+    Antes de crear la tarea, verifica que no exista otra con el mismo
+    título (sin distinguir mayúsculas y minúsculas). Si el título ya
+    existe, muestra un mensaje de error y no agrega la tarea.
+
+    Args:
+        tasks (list): Lista de tareas existentes.
+        title (str): Título de la nueva tarea.
+
+    Returns:
+        None
+    """
     # Verificar si ya existe una tarea con el mismo título
     for task in tasks:
         if task["title"].lower() == title.lower():
@@ -15,6 +29,19 @@ def add_task(tasks, title):
 
 
 def list_tasks(tasks):
+    """
+    Muestra en consola todas las tareas registradas.
+
+    Si la lista está vacía, informa al usuario que no hay tareas.
+    En caso contrario, imprime cada tarea mostrando su ID, título
+    y estado de completado.
+
+    Args:
+        tasks (list): Lista de tareas existentes.
+
+    Returns:
+        None
+    """
     if not tasks:
         print("No hay tareas")
         return
@@ -46,7 +73,22 @@ def validar_task_id(task_id):
 
 
 def complete_task(tasks, task_id):
-<<<<<<< HEAD
+    """
+    Marca una tarea como completada.
+
+    Valida el ID utilizando la función `validar_task_id`. Si el ID
+    es inválido, la función termina sin interrumpir el flujo del
+    programa. Si se encuentra la tarea correspondiente, cambia su
+    estado a completado. Si no existe una tarea con ese ID, muestra
+    un mensaje de error.
+
+    Args:
+        tasks (list): Lista de tareas existentes.
+        task_id (int | str): Identificador de la tarea a completar.
+
+    Returns:
+        None
+    """
     task_id = validar_task_id(task_id)
     if task_id is None:
         return  # 🔁 No se rompe el menú
@@ -61,52 +103,22 @@ def complete_task(tasks, task_id):
 
 
 def delete_task(tasks, task_id):
+    """
+    Elimina una tarea de la lista de tareas.
+
+    Valida el ID utilizando la función `validar_task_id`. Si el ID
+    es inválido, la función termina sin interrumpir el flujo del
+    programa. Si la tarea existe, deberá ser eliminada del listado.
+    Si no se encuentra una tarea con el ID proporcionado, se mostrará
+    un mensaje de error.
+
+    Args:
+        tasks (list): Lista de tareas existentes.
+        task_id (int | str): Identificador de la tarea a eliminar.
+
+    Returns:
+        None
+    """
     task_id = validar_task_id(task_id)
     if task_id is None:
         return  # 🔁 No se rompe el menú
-=======
-    try:
-        task_id = int(task_id)
-    except:
-        print("Error: ID inválido")
-        return
-
-    for task in tasks:
-        if task["id"] == task_id:
-            if task["completed"]:
-                print("La tarea ya estaba completada")
-                return
-            task["completed"] = True
-            print("✔ Tarea completada")
-            return
-
-    print("Error: tarea no encontrada")
-
-
-
-def delete_task(tasks, task_id):
-    try:
-        task_id = int(task_id)
-    except:
-        print("Error: ID inválido")
-        return
-
-    for task in tasks:
-        if task["id"] == task_id:
-            confirm = input(f"¿Seguro que deseas eliminar '{task['title']}'? (s/n): ")
-
-            if confirm.lower() != "s":
-                print("Eliminación cancelada")
-                return
-            tasks.remove(task)
-
-            for i, t in enumerate(tasks):
-                t["id"] = i + 1
-
-            print("Tarea eliminada")
-            return
-
-    print("Error: ID no encontrado")
-
-    print("Error: ID no encontrado")
->>>>>>> upstream/main
